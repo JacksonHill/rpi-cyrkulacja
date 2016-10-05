@@ -1,3 +1,4 @@
+# Script should be run by cron every full hour
 import datetime
 
 when_hour = [6, 8, 14, 19]
