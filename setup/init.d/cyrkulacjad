@@ -1,0 +1,42 @@
+#!/bin/bash
+# Start/stop the cyrkulacja daemon.
+#
+### BEGIN INIT INFO
+# Provides:          cyrkulacja
+# Required-Start:    $cron $syslog $time
+# Required-Stop:     $cron $syslog $time
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Cyrkulacja
+# Description:       Demon do uruchamiania pompki cyrkulacji cwu
+### END INIT INFO
+
+DESC="cyrkulacja daemon"
+NAME=cyrkulacjad
+DAEMON=/usr/bin/cyrkulacjad
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)	log_daemon_msg "Starting cyrkulacjad"
+        $DAEMON
+        log_end_msg $?
+	;;
+stop)	log_daemon_msg "Stopping cyrkulacjad"
+        kill $(pgrep -f  master.py)
+	RV=$?
+        log_end_msg $RV
+	exit 0
+        ;;
+restart) log_daemon_msg "Restarting cyrkulacjad"
+        $0 stop
+        $0 start
+        ;;
+status)
+        status_of_proc -p $(pgrep -f master.py) $VPYTHON && exit 0 || exit $?
+        ;;
+*)	log_action_msg "Usage: /etc/init.d/cyrkulacjad {start|stop|status|restart}"
+        exit 2
+        ;;
+esac
+exit 0
