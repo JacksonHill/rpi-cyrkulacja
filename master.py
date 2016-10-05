@@ -28,7 +28,8 @@ def get_sleep_interval(file=None):
     interval=0
     with open(file, 'r') as f:
         interval = f.readline()
-    interval = int(interval.strip())
+    interval = int(interval.strip()) #throws ValueError
+    return interval
 
 def turn_on():
     G.output(14, G.LOW)
